@@ -1,0 +1,97 @@
+
+enum Color {
+  RED,
+  BLUE,
+  YELLOW,
+  WHITE,
+  GREEN
+};
+
+
+Color mycolor;
+
+unsigned long duration;
+const int trigpin=7;
+const int Echopin=8;
+int LED[5] = {3,11,5,6,10};
+
+
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(trigpin,OUTPUT);
+  pinMode(Echopin,INPUT);
+  pinMode(LED[RED],OUTPUT);
+  pinMode(LED[WHITE],OUTPUT);
+  pinMode(LED[BLUE],OUTPUT);
+  pinMode(LED[YELLOW],OUTPUT);
+  pinMode(LED[GREEN],OUTPUT);
+  Serial.begin(9600);
+
+}
+
+
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  digitalWrite(trigpin,LOW);
+  delayMicroseconds(10);
+  digitalWrite(trigpin,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigpin,LOW);
+
+  duration = pulseIn(Echopin,HIGH); 
+//  Serial .println(duration);
+  unsigned long distance = duration * 0.034 /2; //割る２は往復(cm)
+  Serial.println(distance);
+
+  if (distance > 70 ) {
+    for (int i = 0; i < 1000; i++) {
+    digitalWrite(LED[BLUE],HIGH);
+    delayMicroseconds(900);
+    digitalWrite(LED[BLUE],LOW);
+    delayMicroseconds(100);
+    }
+  }
+  if (distance < 70 ) {
+    for (int i = 0; i < 1000; i++) {
+    digitalWrite(LED[BLUE],HIGH);
+    delayMicroseconds(100);
+    digitalWrite(LED[BLUE],LOW);
+    delayMicroseconds(900);
+    }
+  }
+ 
+}
+/* if (distance <= 5) {
+    digitalWrite(LED[WHITE],HIGH);
+    digitalWrite(LED[GREEN],HIGH);
+    digitalWrite(LED[RED],HIGH);
+    digitalWrite(LED[YELLOW],HIGH);
+    digitalWrite(LED[BLUE],HIGH);
+  } else {
+    digitalWrite(LED[WHITE],LOW);
+    digitalWrite(LED[GREEN],LOW);
+    digitalWrite(LED[RED],LOW);
+    digitalWrite(LED[YELLOW],LOW);
+    digitalWrite(LED[BLUE],LOW);
+  }
+
+  if (distance < 30) {
+    digitalWrite(LED[GREEN],HIGH);
+    digitalWrite(LED[RED],HIGH);
+    digitalWrite(LED[YELLOW],HIGH);
+    digitalWrite(LED[BLUE],HIGH);
+  }
+  if (distance < 40) {
+    digitalWrite(LED[RED],HIGH);
+    digitalWrite(LED[YELLOW],HIGH);
+    digitalWrite(LED[BLUE],HIGH);
+  }
+  if (distance < 50) {
+    digitalWrite(LED[YELLOW],HIGH);
+    digitalWrite(LED[BLUE],HIGH);
+  }
+  if (distance < 60) {
+    digitalWrite(LED[BLUE],HIGH);
+  }*/
