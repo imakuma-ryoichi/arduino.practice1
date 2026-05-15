@@ -1,0 +1,65 @@
+
+const int Mpin1 = 9;
+const int Mpin2 = 10;
+const int Switch = 7;
+const int LED = 8;
+
+class CSwitch {
+public:
+  int statusChangeJudge();
+  int setSwitchStatus(int);
+  int readSwitchStatus();
+
+private:
+  int switchStatus = 0;
+};
+
+CSwitch s;
+
+void setup() {// put your setup code here, to run once:
+
+  pinMode(Mpin1, OUTPUT);
+  pinMode(Mpin2, OUTPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(Switch, INPUT_PULLUP);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+  if (s.statusChangeJudge()) {
+
+    if (s.readSwitchStatus() == 1) {
+      digitalWrite(LED, HIGH);
+      digitalWrite(Mpin1, HIGH); //逆回転
+      digitalWrite(Mpin2, LOW);
+      s.setSwitchStatus(0);
+
+    } else if (s.readSwitchStatus() == 0) {
+      digitalWrite(LED, LOW);
+      digitalWrite(Mpin1, LOW);//時計回りが正転(これが正転)
+      digitalWrite(Mpin2, HIGH);
+      s.setSwitchStatus(1);
+    }
+
+  }
+  delay(100);
+}
+
+
+int CSwitch::setSwitchStatus(int num) {
+  switchStatus = num;
+}
+
+int CSwitch::readSwitchStatus() {
+  return switchStatus;
+}
+
+int CSwitch::statusChangeJudge() {
+
+  if (digitalRead( Switch ) == 0 ) {
+      return 1;
+    }
+  return 0;
+}
+
